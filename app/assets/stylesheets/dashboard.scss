@@ -1,0 +1,62 @@
+// Place all the styles related to the Dashboard controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.dashboard {
+  section {
+    text-align: left;
+    h2 {
+      text-align: center;
+    }
+    article {
+      width: 30%;
+      position: relative;
+      display: block;
+      float: left;
+      margin: 18px;
+      border: 1px solid;
+      border-color: rgb(202, 199, 199);
+      text-align: center;
+      .btn {
+        background-color: #DAE8FC;
+        color: black;
+        width: 100px;
+        margin: 10px 0;
+      }
+    }
+  }
+}
+
+.score {
+  .period {
+    text-align: center;
+    span {
+      font-size: 16px;
+      font-weight: bold;
+      padding-right: 20px;
+    }
+    select {
+      width: 100px;
+    }
+  }
+  .row {
+    margin: 30px 0;
+    .results {
+      width: 70%;
+      margin: 0 auto;
+    }
+    .col{      
+      position: relative;
+      float: left;
+      margin: 30px 80px 0 0;
+      label {
+        font-weight: bold;
+        width: 140px;
+      }
+      input {
+        background-color: #f5f3f3;
+      }
+    }
+  }
+}
+

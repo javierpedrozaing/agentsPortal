@@ -1,0 +1,27 @@
+FactoryGirl.define do
+  factory :transaction do
+    current_date "2023-12-27"
+    agent1_name "MyString"
+    agent2_name "MyString"
+    agent3_name "MyString"
+    type_of_transaction "MyString"
+    property_address "MyString"
+    seller_lessor "MyString"
+    buyer_lessee "MyString"
+    agent_client "MyString"
+    closing_date "MyString"
+    title_escrow_company "MyString"
+    sale_purchase "MyString"
+    bank_deposit "MyString"
+    transaction_fee_amount "MyString"
+    commission_percentage "MyString"
+    agent1_commission_percentage "MyString"
+    agent1_commission_amount "MyString"
+    agent2_commission_percentage "MyString"
+    agent2_commission_amount "MyString"
+    referral_to "MyString"
+    referral_amount "MyString"
+    office_commission_percentage "MyString"
+    office_commission_amount "MyString"
+  end
+end

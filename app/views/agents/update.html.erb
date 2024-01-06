@@ -1,0 +1,68 @@
+<h1>Update agent</h1>
+<div class="create-agent-form">
+<%= form_for :user, html: { class: "form" }  do |f| %>
+  <div class="field">
+    <%= f.label :name, class: "form-label" %>
+    <%= f.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :last_name, class: "form-label" %>
+    <%= f.text_field :last_name, class: "form-control" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email, class: "form-label" %>
+    <%= f.email_field :email, class: "form-control" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :phone, class: "form-label" %>
+    <%= f.text_field :phone, class: "form-control" %>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <%= f.label :city, class: "form-label" %>
+      <%= f.select :city, options_for_select(['City1', 'City2', 'City3']), {}, class: "form-control" %>
+    </div>
+
+    <div class="col">
+      <%= f.label :state, class: "form-label" %>
+      <%= f.text_field :state, class: "form-control" %>
+    </div>
+    <!-- Replace the array with the actual cities you want to include in the dropdown -->
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <%= f.label :address_home, class: "form-label" %>
+      <%= f.text_field :address_home, class: "form-control" %>
+    </div>
+
+    <div class="col">
+      <%= f.label :zip_code, class: "form-label" %>
+      <%= f.number_field :zip_code, class: "form-control" %>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col">
+    <%= f.label :licence, class: "form-label" %>
+    <%= f.text_field :licence, class: "form-control" %>
+  </div>
+
+  <div class="col">
+    <%= f.label :split, class: "form-label" %>
+    <%= f.text_field :split, class: "form-control" %>
+  </div>
+
+  </div>
+    
+
+  <div class="actions">
+    <%= f.submit "Create Agent", class: "btn btn-primary" %>
+  </div>
+<% end %>
+</div>

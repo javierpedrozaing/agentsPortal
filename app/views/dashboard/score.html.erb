@@ -1,0 +1,39 @@
+<div class="container score">
+  <h3>Score Report Agent</h3>
+  <p><%= @user.name %> <%= @user.last_name %></p>
+  <%= form_with(url: score_path(@years), local: true, method: "post") do |f| %>
+  <div class="period">
+    <span>Period Year:</span>
+    <select class="form-select" aria-label="Default select example"> 
+    <% @years.each do |year| %>
+      <option value="<%= year %>"><%= year %></option>
+    <% end %>     
+    </select>
+  </div>
+  <% end %>
+  <div class="row">   
+    <div class="results">
+      <div class="col">        
+        <%= label_tag :sales_volume, nil, class: "form-label" %>
+        <%= text_field_tag :sales_volume, nil, readonly: true, class: "read-only" %>
+        </br>
+        <%= label_tag :lease_volume, nil,  class: "form-label" %>
+        <%= text_field_tag :lease_volume, nil, readonly: true %>
+        </br>
+        <%= label_tag :total_volume, nil,  class: "form-label" %>
+        <%= text_field_tag :total_volume, nil,  readonly: true %>        
+      </div>
+
+      <div class="col">
+        <%= label_tag :sales_transaction, nil, class: "form-label" %>
+        <%= text_field_tag :sales_transaction, nil, class: "" %>
+        </br>
+        <%= label_tag :lease_transaction, nil, class: "form-label" %>
+        <%= text_field_tag :lease_transaction, nil, class: "" %>
+        </br>
+        <%= label_tag :total_transaction, nil, class: "form-label" %>
+        <%= text_field_tag :total_transaction, nil, class: "" %>
+      </div>
+    </div>
+  </div>
+</div>

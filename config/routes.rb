@@ -1,0 +1,17 @@
+Rails.application.routes.draw do
+  get 'dashboard/index', as: 'dashboard'
+  get 'dashboard/profile', as: 'profile'
+  match 'dashboard/score', to: 'dashboard#score', as: 'score', via: [:get, :post]
+  get 'dashboard/training', as: 'training'
+
+  devise_scope :user do
+    root to: 'devise/sessions#new'
+  end
+
+  devise_for :users
+  resources :users
+  resources :agents
+
+  post 'agents/update_agent_status', as: 'update_agent_status'
+
+end
