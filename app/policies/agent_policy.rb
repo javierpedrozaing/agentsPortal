@@ -6,6 +6,10 @@ class AgentPolicy
     @agent = agent
   end
 
+  def index?
+    user.role == 'admin'
+  end
+
   def new?
     user.role == 'admin'
   end

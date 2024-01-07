@@ -1,0 +1,133 @@
+<%= form_with(model: @transaction, local: true, html: { class: 'form-transaction' }) do |form| %>  
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= form.label :current_date %>
+        <%= form.date_field :current_date, class: 'form-control', value: Date.current, readonly: true  %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :agent1_name %>
+        <%= form.text_field :agent1_name, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :agent2_name %>
+        <%= form.text_field :agent2_name, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :agent3_name %>
+        <%= form.text_field :agent3_name, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :type_of_transaction %>
+        <%= form.text_field :type_of_transaction, class: 'form-control' %>
+      </div>
+
+       <div class="form-group">
+        <%= form.label :property_address %>
+        <%= form.text_field :property_address, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :seller_lessor %>
+        <%= form.text_field :seller_lessor, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :buyer_lessee %>
+        <%= form.text_field :buyer_lessee, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= form.label :agent_client %>
+        <%= form.text_field :agent_client, class: 'form-control' %>
+      </div>
+
+       <div class="form-group">
+        <%= form.label :closing_date %>
+        <%= form.text_field :closing_date, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :title_escrow_company %>
+        <%= form.text_field :title_escrow_company, class: 'form-control' %>
+      </div>
+
+       <div class="form-group">
+        <%= form.label :sale_purchase %>
+        <%= form.text_field :sale_purchase, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :bank_deposit %>
+        <%= form.text_field :bank_deposit, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :transaction_fee_amount %>
+        <%= form.text_field :transaction_fee_amount, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :commission_percentage %>
+        <%= form.text_field :commission_percentage, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :agent1_commission_percentage %>
+        <%= form.text_field :agent1_commission_percentage, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <%= form.label :agent1_commission_amount %>
+        <%= form.text_field :agent1_commission_amount, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :agent2_commission_percentage %>
+        <%= form.text_field :agent2_commission_percentage, class: 'form-control' %>
+      </div>
+
+       <div class="form-group">
+        <%= form.label :agent2_commission_amount %>
+        <%= form.text_field :agent2_commission_amount, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :referral_to %>
+        <%= form.text_field :referral_to, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :referral_amount %>
+        <%= form.text_field :referral_amount, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :office_commission_percentage %>
+        <%= form.text_field :office_commission_percentage, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :office_commission_amount %>
+        <%= form.text_field :office_commission_amount, class: 'form-control' %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :user_id %>
+        <%= form.text_field :user_id, class: 'form-control' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions mt-3">
+    <%= form.submit class: 'btn btn-primary' %>
+  </div>
+<% end %>

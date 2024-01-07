@@ -1,4 +1,9 @@
 Rails.application.routes.draw do
+  resources :transactions do
+    collection do
+      post 'import'
+    end
+  end
   get 'dashboard/index', as: 'dashboard'
   get 'dashboard/profile', as: 'profile'
   match 'dashboard/score', to: 'dashboard#score', as: 'score', via: [:get, :post]
