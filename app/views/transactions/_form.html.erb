@@ -8,17 +8,17 @@
 
       <div class="form-group">
         <%= form.label :agent1_name %>
-        <%= form.text_field :agent1_name, class: 'form-control' %>
+        <%= form.select :agent1_name, agents_list, {prompt: 'Select Agent'}, class: 'form-control' %>
       </div>
 
       <div class="form-group">
         <%= form.label :agent2_name %>
-        <%= form.text_field :agent2_name, class: 'form-control' %>
+        <%= form.select :agent2_name, agents_list, {prompt: 'Select Agent'}, class: 'form-control' %>
       </div>
 
       <div class="form-group">
         <%= form.label :agent3_name %>
-        <%= form.text_field :agent3_name, class: 'form-control' %>
+        <%= form.select :agent3_name, agents_list, {prompt: 'Select Agent'}, class: 'form-control' %>
       </div>
 
       <div class="form-group">
@@ -50,7 +50,7 @@
 
        <div class="form-group">
         <%= form.label :closing_date %>
-        <%= form.text_field :closing_date, class: 'form-control' %>
+        <%= form.date_field :closing_date, class: 'form-control' %>
       </div>
 
       <div class="form-group">
@@ -121,8 +121,7 @@
       </div>
 
       <div class="form-group">
-        <%= form.label :user_id %>
-        <%= form.text_field :user_id, class: 'form-control' %>
+        <%= form.hidden_field :user_id, class: 'form-control', value: current_user.id %>
       </div>
     </div>
   </div>

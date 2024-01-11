@@ -26,13 +26,13 @@
 
       <div class="col">
         <%= label_tag :sales_transaction, nil, class: "form-label" %>
-        <%= text_field_tag :sales_transaction, nil, class: "" %>
+        <%= text_field_tag :sales_transaction, nil, readonly: true, class: "" %>
         </br>
-        <%= label_tag :lease_transaction, nil, class: "form-label" %>
-        <%= text_field_tag :lease_transaction, nil, class: "" %>
+        <%= label_tag :lease_transaction, nil, readonly: true, class: "form-label" %>
+        <%= text_field_tag :lease_transaction, nil, readonly: true, class: "" %>
         </br>
         <%= label_tag :total_transaction, nil, class: "form-label" %>
-        <%= text_field_tag :total_transaction, nil, class: "" %>
+        <%= text_field_tag :total_transaction, nil, readonly: true, class: "" %>
       </div>
     </div>
   </div>

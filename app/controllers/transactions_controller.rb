@@ -1,8 +1,11 @@
+require 'csv'
+
 class TransactionsController < ApplicationController
   before_action :set_transaction, only: %i[ show edit update destroy ]
 
   # GET /transactions or /transactions.json
   def index
+    @transaction = Transaction.new
     @transactions = Transaction.all
   end
 
@@ -13,6 +16,7 @@ class TransactionsController < ApplicationController
   # GET /transactions/new
   def new
     @transaction = Transaction.new
+    @agents = Agent.all.select(:id, :user_id, :name, :last_name)
   end
 
   # GET /transactions/1/edit
@@ -21,14 +25,16 @@ class TransactionsController < ApplicationController
 
   def import
     file = params[:transaction][:csv_file]
-
+    byebug
     if file.present?
       data = file.read
 
       begin
         CSV.parse(data, headers: true) do |row|
           # Assuming your CSV has columns in the same order as your transactions table
-          transaction_params = row.to_h
+          transaction_params = row.to_h.transform_values { |value| value.present? ? value : "-" }
+          # modify the previous line to map empty values to nil if needed
+          byebug
           transaction_params['user_id'] = current_user.id # Set the user_id based on the current user
 
           Transaction.create!(transaction_params)
@@ -50,7 +56,7 @@ class TransactionsController < ApplicationController
     respond_to do |format|
       if @transaction.save
         format.html { redirect_to transaction_url(@transaction), notice: "Transaction was successfully created." }
-        format.json { render :show, status: :created, location: @transaction }
+        format.json { render :index, status: :created, location: @transaction }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @transaction.errors, status: :unprocessable_entity }
