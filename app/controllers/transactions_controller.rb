@@ -26,35 +26,36 @@ class TransactionsController < ApplicationController
 
   def import
     file = params[:transaction][:csv_file]
+
     if file.present?
       data = file.read
 
       begin
         CSV.parse(data, headers: true) do |row|
-          # Assuming your CSV has columns in the same order as your transactions table
-          transaction_params = row.to_h.transform_values { |value| value.present? ? value : "-" }
-          # modify the previous line to map empty values to nil if needed
+          begin
+            transaction_params = row.to_h.transform_values { |value| value.present? ? value : "-" }
+            transaction_params['user_id'] = current_user.id
 
-          transaction_params['user_id'] = current_user.id # Set the user_id based on the current user
+            agent1_name, agent1_last_name = transaction_params['agent1_name'].split(' ')
+            agent2_name, agent2_last_name = transaction_params['agent2_name'].split(' ')
+            agent3_name, agent3_last_name = transaction_params['agent3_name'].split(' ')
 
-          Transaction.create!(transaction_params)
+            user1 = User.where('lower(name) = ? AND lower(last_name) = ?', agent1_name, agent1_last_name)
+            user2 = User.where('lower(name) = ? AND lower(last_name) = ?', agent2_name, agent2_last_name)
+            user3 = User.where('lower(name) = ? AND lower(last_name) = ?', agent3_name, agent3_last_name)
 
-          agent1_name, agent1_last_name = transaction_params['agent1_name'].split(' ')
-          agent2_name, agent2_last_name = transaction_params['agent2_name'].split(' ')
-          agent3_name, agent3_last_name = transaction_params['agent3_name'].split(' ')
-          byebug
+            @transaction = Transaction.create!(transaction_params)
+            @transaction.users << user1 << user2 << user3
 
-          user1 = User.where('lower(name) = ? AND lower(last_name) = ?', agent1_name, agent1_last_name)
-          user2 = User.where('lower(name) = ? AND lower(last_name) = ?', agent2_name, agent2_last_name)
-          user2 = User.where('lower(name) = ? AND lower(last_name) = ?', agent3_name, agent3_last_name)
-
-          @transaction.users << user1 << user2 << user3
-
-          update_scores(@transaction, users)
+            update_scores(@transaction, [@user1, @user2, @user3])
+          rescue ActiveRecord::RecordInvalid => e
+            # Handle record invalid exception for a specific row
+            Rails.logger.error("Error creating transaction: #{e.message}")
+          end
         end
 
         redirect_to transactions_path, notice: 'CSV file imported successfully.'
-      rescue CSV::MalformedCSVError, CSV::Row::UnknownHeaderError, ActiveRecord::RecordInvalid => e
+      rescue CSV::MalformedCSVError => e
         redirect_to new_transaction_path, alert: "Error importing CSV file: #{e.message}"
       end
     else
@@ -95,8 +96,9 @@ class TransactionsController < ApplicationController
   end
 
   def update_scores(transaction, users)
+    return unless transaction.present? && users.present?
     users.each do |user|
-      agent = user.agent
+      agent = user&.agent
 
       next unless agent # Skip the iteration if agent is nil
 
@@ -112,11 +114,10 @@ class TransactionsController < ApplicationController
 
   # DELETE /transactions/1 or /transactions/1.json
   def destroy
-    @transaction.destroy
-
-    respond_to do |format|
-      format.html { redirect_to transactions_url, notice: "Transaction was successfully deleted." }
-      format.json { head :no_content }
+    if @transaction.destroy
+      redirect_to transactions_path, notice: 'Record was successfully destroyed.'
+    else
+      redirect_to transactions_path, alert: 'Failed to destroy the record.'
     end
   end
 

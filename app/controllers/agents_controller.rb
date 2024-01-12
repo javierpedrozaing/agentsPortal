@@ -40,7 +40,7 @@ class AgentsController < ApplicationController
     @agent = @user.build_agent(agent_params)
 
     if @user.save && @agent.save
-      redirect_to @agent, notice: 'Agent was successfully created.'
+      redirect_to agents_path, notice: 'Agent was successfully created.'
     else
       render :new
     end
