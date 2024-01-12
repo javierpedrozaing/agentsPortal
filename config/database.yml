@@ -20,6 +20,11 @@ test:
   <<: *default
   database: db/test.sqlite3
 
-production:
+production:  
   <<: *default
-  database: db/production.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  database: your_app_name_production
+  username: your_database_username
+  password: your_database_password

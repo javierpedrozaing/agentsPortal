@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <h1>Transactions</h1>
 
   <div class="row">
@@ -56,9 +54,9 @@
       <% @transactions.each do |transaction| %>
         <tr>
           <td><%= transaction.current_date %></td>
-          <td><%= transaction.agent1_name %></td>
-          <td><%= transaction.agent2_name %></td>
-          <td><%= transaction.agent3_name %></td>
+          <td><%= transaction.agent1_name.to_i > 0 ? User.find(transaction.agent1_name).name + " " + User.find(transaction.agent1_name).last_name :  transaction.agent1_name %></td>
+          <td><%= transaction.agent2_name.to_i > 0 ? User.find(transaction.agent2_name).name + " " + User.find(transaction.agent2_name).last_name :  transaction.agent2_name %></td>
+          <td><%= transaction.agent3_name.to_i > 0 ? User.find(transaction.agent3_name).name + " " + User.find(transaction.agent3_name).last_name :  transaction.agent3_name %></td>
           <td><%= transaction.type_of_transaction %></td>
           <td><%= transaction.property_address %></td>
           <td><%= transaction.seller_lessor %></td>

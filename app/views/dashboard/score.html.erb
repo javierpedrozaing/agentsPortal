@@ -15,24 +15,24 @@
     <div class="results">
       <div class="col">        
         <%= label_tag :sales_volume, nil, class: "form-label" %>
-        <%= text_field_tag :sales_volume, nil, readonly: true, class: "read-only" %>
+        <%= text_field_tag :sales_volume, @sales_volume, readonly: true, class: "read-only" %>
         </br>
         <%= label_tag :lease_volume, nil,  class: "form-label" %>
-        <%= text_field_tag :lease_volume, nil, readonly: true %>
+        <%= text_field_tag :lease_volume, @lease_volume, readonly: true %>
         </br>
         <%= label_tag :total_volume, nil,  class: "form-label" %>
-        <%= text_field_tag :total_volume, nil,  readonly: true %>        
+        <%= text_field_tag :total_volume, @total_volume, readonly: true %>        
       </div>
 
       <div class="col">
         <%= label_tag :sales_transaction, nil, class: "form-label" %>
-        <%= text_field_tag :sales_transaction, nil, readonly: true, class: "" %>
+        <%= text_field_tag :sales_transaction, @sales_transactions, readonly: true, class: "" %>
         </br>
         <%= label_tag :lease_transaction, nil, readonly: true, class: "form-label" %>
-        <%= text_field_tag :lease_transaction, nil, readonly: true, class: "" %>
+        <%= text_field_tag :lease_transaction, @lease_transactions, readonly: true, class: "" %>
         </br>
         <%= label_tag :total_transaction, nil, class: "form-label" %>
-        <%= text_field_tag :total_transaction, nil, readonly: true, class: "" %>
+        <%= text_field_tag :total_transaction, @total_transactions, readonly: true, class: "" %>
       </div>
     </div>
   </div>

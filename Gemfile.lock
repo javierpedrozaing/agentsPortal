@@ -163,6 +163,7 @@ GEM
     nokogiri (1.13.10-x86_64-darwin)
       racc (~> 1.4)
     orm_adapter (0.5.0)
+    pg (1.2.3)
     public_suffix (5.0.4)
     puma (3.12.6)
     pundit (2.3.1)
@@ -302,6 +303,7 @@ DEPENDENCIES
   jquery-rails
   launchy
   listen (~> 3.0.5)
+  pg
   puma (~> 3.0)
   pundit (~> 2.3)
   rails (~> 6.1.5)

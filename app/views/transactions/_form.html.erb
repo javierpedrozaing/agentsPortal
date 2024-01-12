@@ -8,22 +8,24 @@
 
       <div class="form-group">
         <%= form.label :agent1_name %>
-        <%= form.select :agent1_name, agents_list, {prompt: 'Select Agent'}, class: 'form-control' %>
+        <%= form.select :agent1_name, options_for_select(@agents_list, @transaction.agent1_name), { prompt: 'Select type of transaction' }, class: 'form-control' %>
+
       </div>
 
       <div class="form-group">
         <%= form.label :agent2_name %>
-        <%= form.select :agent2_name, agents_list, {prompt: 'Select Agent'}, class: 'form-control' %>
+        <%= form.select :agent2_name, options_for_select(@agents_list, @transaction.agent2_name), { prompt: 'Select type of transaction' }, class: 'form-control' %>
       </div>
 
       <div class="form-group">
         <%= form.label :agent3_name %>
-        <%= form.select :agent3_name, agents_list, {prompt: 'Select Agent'}, class: 'form-control' %>
+        <%= form.select :agent3_name, options_for_select(@agents_list, @transaction.agent3_name), { prompt: 'Select type of transaction' }, class: 'form-control' %>
       </div>
 
       <div class="form-group">
-        <%= form.label :type_of_transaction %>
-        <%= form.text_field :type_of_transaction, class: 'form-control' %>
+        <%= form.label :type_of_transaction %>        
+        <%= form.select :type_of_transaction, options_for_select(@type_of_transactions, @transaction.type_of_transaction), { prompt: 'Select type of transaction' }, class: 'form-control' %>
+
       </div>
 
        <div class="form-group">

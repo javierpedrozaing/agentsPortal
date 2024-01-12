@@ -14,7 +14,27 @@ class DashboardController < ApplicationController
 
   def score
     authorize :dashboard
+
+    agent_id = current_user.agent.id
+
+    scores = Score.where(agent_id: agent_id)
+    sales_volume = scores.sum(:sales_volume)
+    lease_volume = scores.sum(:lease_volume)
+    total_volume = sales_volume + lease_volume
+
+    sales_transactions = scores.sum(:sales_transactions)
+    lease_transactions = scores.sum(:lease_transactions)
+    total_transactions = sales_transactions + lease_transactions
+
     @years = [2017, 2018, 2019, 2020, 2021, 2022, 2023]
+    @months = [1,2,3,4,5,6,7,8,9,10,11,12]
+
+    @sales_volume = sales_volume
+    @lease_volume = lease_volume
+    @total_volume = total_volume
+    @sales_transactions = sales_transactions
+    @lease_transactions = lease_transactions
+    @total_transactions = total_transactions
   end
 
   def training
