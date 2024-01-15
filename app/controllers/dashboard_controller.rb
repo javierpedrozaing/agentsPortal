@@ -9,7 +9,8 @@ class DashboardController < ApplicationController
 
   def profile
     redirect_to new_agent_path if @user.nil?
-    render locals: { user: @user }
+    states, cities = get_countries_states_and_cities
+    render locals: { user: @user, states: states, cities: cities }
   end
 
   def score
@@ -41,7 +42,22 @@ class DashboardController < ApplicationController
     authorize :dashboard
   end
 
+  def get_cities_by_state_and_country
+    state = params[:state]
+    country = params[:country] || 'US'
+    cities = ApplicationHelper::cities_list_by_state_and_country(state, country)
+    render json: cities
+  end
+
   private
+
+  def get_countries_states_and_cities
+    states_list = ApplicationHelper::states_list_by_country('US')
+    @states = states_list.nil? || states_list.length <= 1 ? [] : states_list.map{|c| [c['name'], c['iso2']]}
+    cities_list = ApplicationHelper::cities_list('US')
+    @cities = cities_list.nil? || states_list.length <= 1 ? [] : cities_list.map{|c| [c['name'], c['id']]}
+    [@states.uniq.compact, @cities.uniq.compact]
+  end
 
   def set_user
     @user = current_user

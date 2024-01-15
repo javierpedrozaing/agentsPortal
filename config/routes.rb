@@ -18,5 +18,5 @@ Rails.application.routes.draw do
   resources :agents
 
   post 'agents/update_agent_status', as: 'update_agent_status'
-
+  get 'dashboard/get_cities_by_state_and_country', as: 'get_cities_by_state_and_country'
 end

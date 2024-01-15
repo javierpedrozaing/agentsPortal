@@ -4,3 +4,15 @@ h1{
 
  $font-color:#000;
  $button-color: #DAE8FC; 
+
+ #loading-spinner {
+  display: block;
+  position: fixed;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  img {
+    width: 100px;
+  }
+}
