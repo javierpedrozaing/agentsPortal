@@ -1,3 +1,24 @@
 // Place all the styles related to the Scores controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.generate_report {
+  .form {
+    width: 100%;
+  }
+}
+
+.filters {
+  .form {
+    width: 60%;
+    .filter {
+      position: relative;
+      float: left;
+      top: 24px;
+      width: 100px;
+    }
+  }
+}
+
+.hr {
+  border: 1px solid #36333333;
+}

@@ -3,6 +3,7 @@
     <li><%= link_to 'Agents', agents_path %></li>
     <li><%= link_to 'Create agent', new_agent_path %></li>    
     <li><%= link_to 'Transactions', transactions_path %></li>
+    <li><%= link_to 'Score report', get_scores_path %></li>
   <% else %>
     <%= link_to 'Home', dashboard_path, class: 'navbar-brand' %>
   <% end %>

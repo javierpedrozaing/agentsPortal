@@ -1,0 +1,75 @@
+<div class="container">
+  <h2>Score</h2>
+  <div class="generate_report">
+    <%= form_tag("/scores/generate_report", method: "get", class: 'form') do %>
+        <div class="form-group row">
+          <div class="col-md-1">
+            <%= label_tag(:agent, "Agent:") %>
+          </div>
+          <div class="col-md-3">
+            <%= select_tag(:agent, options_for_select(@agents), class: 'form-control') %>            
+          </div>
+          <div class="col-md-8">
+            <%= submit_tag("Generate Report", class: "btn btn-primary") %>
+          </div>
+       </div>
+    <% end -%>
+  
+  </div>
+
+  <hr class="hr" />
+  
+  <div class="filters row">
+    <%= form_with(url: get_scores_path, local: true, method: "put", class: 'form') do |f| %>
+      <div class="form-group row">
+        <div class="col-md-3">
+          <%= f.label :year, "Year" %>
+          <%= f.text_field :year, class: "form-control" %>
+        </div>
+
+        <div class="col-md-3">
+          <%= f.label :month, "Month" %>
+          <%= f.text_field :month, class: "form-control" %>
+        </div>
+
+        <div class="col-md-4">
+          <%= f.label :agent, "Agent" %>
+          
+          <%= f.select :agent, options_for_select(@agents), { prompt: 'Select Agent' }, class: 'form-control' %>
+        </div>
+
+        <div class="col-md-2">
+          <%= f.submit "Filter", class: "btn btn-primary filter" %>
+        </div>  
+      </div>
+      
+    <% end %>
+  </div>
+
+  <div class="mt-4 wide-table">
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">Agent</th>
+          <th scope="col">Total Volume</th>
+          <th scope="col">Total Transactions</th>
+          <th scope="col">Year</th>
+          <th scope="col">Month</th>
+          <th scope="col">Position</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users_with_scores.each_with_index do |user_with_score, index| %>
+          <tr>
+            <td class="col"><%= user_with_score[:user].name %></td>
+            <td class="col"><%= user_with_score[:score] %></td>
+            <td class="col"><%= user_with_score[:user].score&.sales_transactions.to_i %></td>
+            <td class="col"><%= user_with_score[:transactions].first&.created_at&.year %></td>
+            <td class="col"><%= user_with_score[:transactions].first&.created_at&.month %></td>
+            <td class="col"><%= index + 1 %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

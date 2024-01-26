@@ -97,17 +97,19 @@ class TransactionsController < ApplicationController
 
   def update_scores(transaction, users)
     return unless transaction.present? && users.present?
+
     users.each do |user|
-      agent = user&.agent
+      score = user.score || user.build_score(sales_volume: 0, lease_volume: 0, sales_transactions: 0, lease_transactions: 0)
 
-      next unless agent # Skip the iteration if agent is nil
+      case transaction.type_of_transaction
+      when 'Sale'
+        score.sales_volume += transaction.transaction_fee_amount.to_f
+        score.sales_transactions += 1
+      when 'Lease'
+        score.lease_volume += transaction.transaction_fee_amount.to_f
+        score.lease_transactions += 1
+      end
 
-      score = agent.score || agent.build_score(sales_volume: 0, lease_volume: 0, sales_transactions: 0, lease_transactions: 0)
-
-      score.sales_volume += transaction.transaction_fee_amount.to_f if transaction.type_of_transaction == 'Sale'
-      score.lease_volume += transaction.transaction_fee_amount.to_f if transaction.type_of_transaction == 'Lease'
-      score.sales_transactions += 1 if transaction.type_of_transaction == 'Sale'
-      score.lease_transactions += 1 if transaction.type_of_transaction == 'Lease'
       score.save!
     end
   end
@@ -137,6 +139,6 @@ class TransactionsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def transaction_params
-      params.require(:transaction).permit(:current_date, :agent1_name, :agent2_name, :agent3_name, :type_of_transaction, :property_address, :seller_lessor, :buyer_lessee, :agent_client, :closing_date, :title_escrow_company, :sale_purchase, :bank_deposit, :transaction_fee_amount, :commission_percentage, :agent1_commission_percentage, :agent1_commission_amount, :agent2_commission_percentage, :agent2_commission_amount, :referral_to, :referral_amount, :office_commission_percentage, :office_commission_amount, :user_id)
+      params.require(:transaction).permit(:current_date, :agent1_name, :agent2_name, :agent3_name, :type_of_transaction, :property_address, :seller_lessor, :buyer_lessee, :agent_client, :closing_date, :title_escrow_company, :sale_purchase, :bank_deposit, :transaction_fee_amount, :commission_percentage, :agent1_commission_percentage, :agent1_commission_amount, :agent2_commission_percentage, :agent2_commission_amount, :referral_to, :referral_amount, :office_commission_percentage, :office_commission_amount)
     end
 end

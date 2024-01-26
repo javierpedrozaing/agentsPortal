@@ -19,4 +19,7 @@ Rails.application.routes.draw do
 
   post 'agents/update_agent_status', as: 'update_agent_status'
   get 'dashboard/get_cities_by_state_and_country', as: 'get_cities_by_state_and_country'
+  get 'scores/generate_report', to: 'scores#generate_report', as: 'generate_report'
+  get 'scores', to: 'scores#index', as: 'get_scores'
+  get 'report', to: 'scores#report'
 end
