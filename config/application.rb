@@ -26,5 +26,9 @@ module RailsDeviseRoles
 
     # add a config to use active_storage
     config.active_storage.service = :local
+
+    # config/application.rb or config/environments/your_environment.rb
+    # config.middleware.use WickedPdf::Middleware, {}, only: ['/scores/report_pdf']
+
   end
 end

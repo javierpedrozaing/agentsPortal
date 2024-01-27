@@ -32,5 +32,4 @@ class User < ApplicationRecord
 
     users_with_scores.sort_by { |user_with_score| -user_with_score[:score] }
   end
-
 end

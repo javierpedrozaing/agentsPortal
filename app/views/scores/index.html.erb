@@ -1,23 +1,7 @@
 <div class="container">
   <h2>Score</h2>
-  <div class="generate_report">
-    <%= form_tag("/scores/generate_report", method: "get", class: 'form') do %>
-        <div class="form-group row">
-          <div class="col-md-1">
-            <%= label_tag(:agent, "Agent:") %>
-          </div>
-          <div class="col-md-3">
-            <%= select_tag(:agent, options_for_select(@agents), class: 'form-control') %>            
-          </div>
-          <div class="col-md-8">
-            <%= submit_tag("Generate Report", class: "btn btn-primary") %>
-          </div>
-       </div>
-    <% end -%>
   
-  </div>
-
-  <hr class="hr" />
+<hr class="hr" />
   
   <div class="filters row">
     <%= form_with(url: get_scores_path, local: true, method: "put", class: 'form') do |f| %>

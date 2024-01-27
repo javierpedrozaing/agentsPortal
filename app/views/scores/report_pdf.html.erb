@@ -1,0 +1,10 @@
+
+<div class="container">
+<h2>Score report for  agent <%= @selected_agent.name %></h2>
+
+<%= @users_with_scores.each_with_index do |user_with_score, index| %>
+  <p> <%= user_with_score[index][:user].name %></p>
+  <p>Score: <%= user_with_score[index][:score] %></p>
+  <p>Total Transactions: <%= user_with_score[index][:user].score&.sales_transactions.to_i %></p>
+<% end %>
+</div>
