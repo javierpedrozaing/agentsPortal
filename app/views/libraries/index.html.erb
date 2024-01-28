@@ -1,0 +1,38 @@
+<div class="files-list">
+  <h1 class="mb-4">File Items</h1>
+  <% if current_user.try(:admin?) %>
+    <%= link_to 'New File Item', new_library_path, class: 'btn btn-primary mb-4 new_file_btn' %>
+  <% end %>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>File name</th>
+        <th>File description</th>
+        <th>File Type</th>
+        <th>User</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @file_items.each do |file_item| %>
+        <tr>
+          <td><%= file_item.file_name %></td>
+          <td><%= file_item.file_description %></td>
+          <td><%= file_item.file_type %></td>
+          <td><%= file_item.user.email %></td>
+          <td>
+            <% if file_item.file.attached? %>
+            <%= link_to 'Download', rails_blob_path(file_item.file, disposition: 'attachment'), class: 'btn btn-success btn-sm' %>
+            <% else %>
+              No file
+            <% end %>
+            <% if current_user.try(:admin?) %>
+              <%= link_to 'Edit', edit_library_path(file_item), class: 'btn btn-warning btn-sm mr-2' %>
+              <%= link_to 'Delete', file_item, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

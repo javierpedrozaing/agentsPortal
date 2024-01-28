@@ -1,0 +1,21 @@
+<div class="container">
+  <h1>New File Item</h1>
+
+  <%= form_with(model: @file_item, url: libraries_path, multipart: true) do |form| %>
+    <%= form.label :file_name %>
+    <%= form.text_field :file_name %>
+
+    <%= form.label :file_description %>
+    <%= form.text_field :file_description %>
+
+    <%= form.label :file_type %>
+    <%= form.text_field :file_type %>
+
+    <%= form.label :file %>
+    <%= form.file_field :file %>
+    
+    <%= form.hidden_field :user_id, value: current_user.id %>
+    
+    <%= form.submit 'Upload File' %>
+  <% end %>
+</div>

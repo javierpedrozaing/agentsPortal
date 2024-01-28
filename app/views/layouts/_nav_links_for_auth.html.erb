@@ -5,8 +5,9 @@
     <li><%= link_to 'Transactions', transactions_path %></li>
     <li><%= link_to 'Score report', get_scores_path %></li>
   <% else %>
-    <%= link_to 'Home', dashboard_path, class: 'navbar-brand' %>
-  <% end %>
+    <%= link_to 'Home', dashboard_path, class: 'navbar-brand' %>    
+  <% end %>  
+  <li><%= link_to 'Library', libraries_path %></li>
   <% if policy(:user).edit?  %>
     <li><%= link_to 'Edit account', edit_user_registration_path %></li>
   <% end %>

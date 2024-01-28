@@ -1,5 +1,8 @@
 FactoryGirl.define do
   factory :library do
-    name "MyString"
+    file_name ""
+    file_description ""
+    file_type "MyString"
+    user nil
   end
 end

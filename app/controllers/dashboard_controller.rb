@@ -16,9 +16,9 @@ class DashboardController < ApplicationController
   def score
     authorize :dashboard
 
-    agent_id = current_user.agent.id
+    user_id = current_user.id
 
-    scores = Score.where(agent_id: agent_id)
+    scores = Score.where(user_id: user_id)
     sales_volume = scores.sum(:sales_volume)
     lease_volume = scores.sum(:lease_volume)
     total_volume = sales_volume + lease_volume

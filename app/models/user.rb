@@ -8,6 +8,8 @@ class User < ApplicationRecord
   has_many :transaction_users
   has_many :transactions, through: :transaction_users, source: :transaction_record
 
+  has_many :libraries
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,

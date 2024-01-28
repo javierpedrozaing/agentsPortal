@@ -1,3 +1,4 @@
 class Library < ApplicationRecord
-  has_many :documents
+  belongs_to :user
+  has_one_attached :file
 end
