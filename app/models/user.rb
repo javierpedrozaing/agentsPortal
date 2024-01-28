@@ -18,10 +18,12 @@ class User < ApplicationRecord
     self.role ||= :agent
   end
 
-  def self.calculate_relative_position
+  def self.calculate_relative_position(year = nil, month = nil, user_id = nil)
+    return filter_by_agent(year, month, user_id) if user_id.present?
+
     users_with_scores = includes(:score, :transactions).all.map do |user|
       score = user.score
-      transactions = user.transactions
+      transactions = filter_transactions(user, year, month)
 
       {
         user: user,
@@ -29,7 +31,31 @@ class User < ApplicationRecord
         transactions: transactions
       }
     end
-
     users_with_scores.sort_by { |user_with_score| -user_with_score[:score] }
+  end
+
+  def self.filter_by_agent(year, month, user_id)
+    users_with_scores = where(id: user_id).includes(:score, :transactions).all.map do |user|
+      score = user.score
+      transactions = filter_transactions(user, year, month)
+
+      {
+        user: user,
+        score: score&.sales_volume.to_f + score&.sales_transactions.to_i,
+        transactions: transactions
+      }
+    end
+  end
+
+  def self.filter_transactions(user, year, month)
+    if year.present? && month.present?
+      transactions = user.transactions.where("strftime('%Y', transactions.created_at) = ? AND strftime('%m', transactions.created_at) = ?", year.to_s, month.to_s)
+    elsif year.present?
+      transactions = user.transactions.where("strftime('%Y', transactions.created_at) = ?", year.to_s)
+    elsif month.present?
+      transactions = user.transactions.where("strftime('%m', transactions.created_at) = ?", month.to_s)
+    else
+      transactions = user.transactions
+    end
   end
 end

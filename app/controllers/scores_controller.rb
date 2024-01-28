@@ -2,7 +2,16 @@ class ScoresController < ApplicationController
 
   def index
     @agents = User.where(role: 'agent').map { |agent| [agent.name + ' ' + agent.last_name, agent.id] }
-    @users_with_scores = User.calculate_relative_position
+
+    year = params[:year]
+    month = params[:month]
+    agent_id = params[:agent]
+
+    if agent_id.present? || year.present? || month.present?
+      @users_with_scores = User.calculate_relative_position(year, month, agent_id)
+    else
+      @users_with_scores = User.calculate_relative_position
+    end
   end
 
   # def report_pdf

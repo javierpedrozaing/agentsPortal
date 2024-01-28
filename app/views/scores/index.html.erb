@@ -4,16 +4,16 @@
 <hr class="hr" />
   
   <div class="filters row">
-    <%= form_with(url: get_scores_path, local: true, method: "put", class: 'form') do |f| %>
+    <%= form_with(url: get_scores_path, local: true, method: "post", class: 'form') do |f| %>
       <div class="form-group row">
         <div class="col-md-3">
           <%= f.label :year, "Year" %>
-          <%= f.text_field :year, class: "form-control" %>
+          <%= select_tag(:year, options_for_select((2020..Date.current.year).to_a), prompt: 'Select year', class: 'form-control') %>
         </div>
 
         <div class="col-md-3">
           <%= f.label :month, "Month" %>
-          <%= f.text_field :month, class: "form-control" %>
+          <%= select_tag(:month, options_for_select((1..12).to_a), prompt: 'Select month', class: 'form-control') %>
         </div>
 
         <div class="col-md-4">
@@ -48,8 +48,8 @@
             <td class="col"><%= user_with_score[:user].name %></td>
             <td class="col"><%= user_with_score[:score] %></td>
             <td class="col"><%= user_with_score[:user].score&.sales_transactions.to_i %></td>
-            <td class="col"><%= user_with_score[:transactions].first&.created_at&.year %></td>
-            <td class="col"><%= user_with_score[:transactions].first&.created_at&.month %></td>
+            <td class="col"><%= user_with_score[:transactions]&.first&.created_at&.year %></td>
+            <td class="col"><%= user_with_score[:transactions]&.first&.created_at&.month %></td>
             <td class="col"><%= index + 1 %></td>
           </tr>
         <% end %>
