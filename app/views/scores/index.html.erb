@@ -35,6 +35,7 @@
       <thead>
         <tr>
           <th scope="col">Agent</th>
+          <th scope="col">Email</th>
           <th scope="col">Total Volume</th>
           <th scope="col">Total Transactions</th>
           <th scope="col">Year</th>
@@ -45,7 +46,8 @@
       <tbody>
         <% @users_with_scores.each_with_index do |user_with_score, index| %>
           <tr>
-            <td class="col"><%= user_with_score[:user].name %></td>
+            <td class="col"><%= user_with_score[:user].name %> <%= user_with_score[:user].last_name %></td>
+            <td class="col"><%= user_with_score[:user].email %></td>
             <td class="col"><%= user_with_score[:score] %></td>
             <td class="col"><%= user_with_score[:user].score&.sales_transactions.to_i %></td>
             <td class="col"><%= user_with_score[:transactions]&.first&.created_at&.year %></td>

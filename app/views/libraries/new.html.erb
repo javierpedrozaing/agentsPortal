@@ -1,21 +1,39 @@
 <div class="container">
   <h1>New File Item</h1>
-
+  </br>
   <%= form_with(model: @file_item, url: libraries_path, multipart: true) do |form| %>
-    <%= form.label :file_name %>
-    <%= form.text_field :file_name %>
+    <div class="row">
+      <div class="col-md-4">
+        <%= form.label :file_name %>
+        <%= form.text_field :file_name, class: 'form-control' %>
+      </div>
 
-    <%= form.label :file_description %>
-    <%= form.text_field :file_description %>
+      <div class="col-md-4">
+        <%= form.label :file_description %>
+        <%= form.text_field :file_description, class: 'form-control' %>
+      </div>
 
-    <%= form.label :file_type %>
-    <%= form.text_field :file_type %>
+      <div class="col-md-4">
+        <%= form.label :file_type %>
+        <%= form.text_field :file_type, class: 'form-control' %>
+      </div>
+    </div>
 
-    <%= form.label :file %>
-    <%= form.file_field :file %>
-    
-    <%= form.hidden_field :user_id, value: current_user.id %>
-    
-    <%= form.submit 'Upload File' %>
+    <div class="row">
+      <div class="col-md-8">
+        <%= form.label :file %>
+        <%= form.file_field :file, class: 'form-control' %>
+      </div>
+
+      <div class="col-md-4">        
+        <%= form.hidden_field :user_id, value: current_user.id %>
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-md-4">
+        <%= form.submit 'Upload File', class: 'btn btn-primary upload-file' %>
+      </div>
+    </div>
   <% end %>
 </div>

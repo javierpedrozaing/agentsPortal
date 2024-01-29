@@ -22,10 +22,11 @@ class User < ApplicationRecord
 
   def self.calculate_relative_position(year = nil, month = nil, user_id = nil)
     return filter_by_agent(year, month, user_id) if user_id.present?
+    return filter_transactions(user_id, year, month) if year.present? || month.present?
 
-    users_with_scores = includes(:score, :transactions).all.map do |user|
+    users_with_scores = where(role: "agent").includes(:score, :transactions).all.map do |user|
       score = user.score
-      transactions = filter_transactions(user, year, month)
+      transactions = user.transactions
 
       {
         user: user,
@@ -39,7 +40,7 @@ class User < ApplicationRecord
   def self.filter_by_agent(year, month, user_id)
     users_with_scores = where(id: user_id).includes(:score, :transactions).all.map do |user|
       score = user.score
-      transactions = filter_transactions(user, year, month)
+      transactions = user.transactions
 
       {
         user: user,
@@ -49,15 +50,30 @@ class User < ApplicationRecord
     end
   end
 
-  def self.filter_transactions(user, year, month)
+  def self.filter_transactions(user_id, year, month)
     if year.present? && month.present?
-      transactions = user.transactions.where("strftime('%Y', transactions.created_at) = ? AND strftime('%m', transactions.created_at) = ?", year.to_s, month.to_s)
+      transactions = Transaction.where("strftime('%Y', transactions.created_at) = ? AND strftime('%m', transactions.created_at) = ?", year.to_s, "%02d" % month.to_s)
     elsif year.present?
-      transactions = user.transactions.where("strftime('%Y', transactions.created_at) = ?", year.to_s)
+      transactions = Transaction.where("strftime('%Y', transactions.created_at) = ?", year.to_s)
     elsif month.present?
-      transactions = user.transactions.where("strftime('%m', transactions.created_at) = ?", month.to_s)
+      transactions = Transaction.where("strftime('%m', transactions.created_at) = ?", "%02d" % month.to_s)
+
     else
       transactions = user.transactions
     end
+
+    user_ids = transactions.map(&:user_ids).flatten.uniq
+
+    users_with_scores = where(role: 'agent').where(id: user_ids).includes(:score, :transactions).all.map do |user|
+      score = user.score
+      transactions = transactions.where(user_id: user.id)
+
+      {
+        user: user,
+        score: score&.sales_volume.to_f + score&.sales_transactions.to_i,
+        transactions: user.transactions
+      }
+    end
+    users_with_scores.sort_by { |user_with_score| -user_with_score[:score] }
   end
 end
