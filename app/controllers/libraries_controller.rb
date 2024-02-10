@@ -16,10 +16,14 @@ class LibrariesController < ApplicationController
   def create
     @file_item = current_user.libraries.build(file_item_params)
 
-    if @file_item.save
-      redirect_to libraries_path, notice: 'File uploaded successfully.'
-    else
-      render :new
+    respond_to do |format|
+      if @file_item.save
+        format.html { redirect_to libraries_path, notice: 'File uploaded successfully.' }
+        format.json { render :index, status: :created, location: @file_item }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @file_item.errors, status: :unprocessable_entity }
+      end
     end
   end
 

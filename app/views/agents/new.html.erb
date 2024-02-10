@@ -1,6 +1,21 @@
 <h1>Create agent</h1>
 <iv class="create-agent-form">
   <%= form_with(url: agents_path(@user), local: true, method: "post") do |f| %>
+  <div class="row">
+    <div class="col-md-4">
+      <% if @user.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@user.errors.count, "error") %> prohibited this agent being saved:</h2>
+
+          <ul>
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+  </div>
 
   <div class="field">
     <%= f.label :name, class: "form-label" %>

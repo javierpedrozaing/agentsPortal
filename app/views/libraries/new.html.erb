@@ -2,6 +2,24 @@
   <h1>New File Item</h1>
   </br>
   <%= form_with(model: @file_item, url: libraries_path, multipart: true) do |form| %>
+
+  <div class="row">
+    <div class="col-md-4">
+    <p>errores</p>
+      <% if @file_item.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@file_item.errors.count, "error") %> prohibited this file item from being saved:</h2>
+
+          <ul>
+            <% @file_item.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
     <div class="row">
       <div class="col-md-4">
         <%= form.label :category_id %>
