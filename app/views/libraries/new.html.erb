@@ -4,6 +4,12 @@
   <%= form_with(model: @file_item, url: libraries_path, multipart: true) do |form| %>
     <div class="row">
       <div class="col-md-4">
+        <%= form.label :category_id %>
+        <%= form.collection_select :category_id, Category.all, :id, :name, {prompt: "Select a category"}, class: 'form-control' %>
+      </div>
+
+      <div class="col-md-4">        
+
         <%= form.label :file_name %>
         <%= form.text_field :file_name, class: 'form-control' %>
       </div>
@@ -12,21 +18,19 @@
         <%= form.label :file_description %>
         <%= form.text_field :file_description, class: 'form-control' %>
       </div>
+    </div>
 
+<br/>
+
+    <div class="row">
       <div class="col-md-4">
         <%= form.label :file_type %>
         <%= form.text_field :file_type, class: 'form-control' %>
       </div>
-    </div>
 
-    <div class="row">
       <div class="col-md-8">
         <%= form.label :file %>
         <%= form.file_field :file, class: 'form-control' %>
-      </div>
-
-      <div class="col-md-4">        
-        <%= form.hidden_field :user_id, value: current_user.id %>
       </div>
     </div>
 

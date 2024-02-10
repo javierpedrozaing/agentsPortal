@@ -17,7 +17,7 @@ class LibrariesController < ApplicationController
     @file_item = current_user.libraries.build(file_item_params)
 
     if @file_item.save
-      redirect_to @file_item, notice: 'File uploaded successfully.'
+      redirect_to libraries_path, notice: 'File uploaded successfully.'
     else
       render :new
     end
@@ -46,6 +46,6 @@ class LibrariesController < ApplicationController
   end
 
   def file_item_params
-    params.require(:library).permit(:file_name, :file_description, :file_type, :user_id, :file)
+    params.require(:library).permit(:file_name, :file_description, :file_type, :user_id, :file, :category_id)
   end
 end

@@ -2,12 +2,14 @@
   <h1 class="mb-4">File Items</h1>
   <% if current_user.try(:admin?) %>
     <%= link_to 'New File Item', new_library_path, class: 'btn btn-primary mb-4 new_file_btn' %>
+    <%= link_to 'New Category', new_category_path, class: 'btn btn-primary mb-4 new_file_btn' %>
   <% end %>
   <table class="table table-bordered">
     <thead>
       <tr>
         <th>File name</th>
         <th>File description</th>
+        <th>Category</th>
         <th>File Type</th>
         <th>Actions</th>
       </tr>
@@ -17,6 +19,7 @@
         <tr>
           <td><%= file_item.file_name %></td>
           <td><%= file_item.file_description %></td>
+          <td><%= file_item.category&.name %></td>
           <td><%= file_item.file_type %></td>
           <td>
             <% if file_item.file.attached? %>
