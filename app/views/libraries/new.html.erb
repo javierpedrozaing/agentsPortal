@@ -5,7 +5,7 @@
 
   <div class="row">
     <div class="col-md-4">
-    <p>errores</p>
+
       <% if @file_item.errors.any? %>
         <div id="error_explanation">
           <h2><%= pluralize(@file_item.errors.count, "error") %> prohibited this file item from being saved:</h2>
@@ -28,7 +28,7 @@
 
       <div class="col-md-4">        
 
-        <%= form.label :file_name %>
+        <%= form.label 'File name (Required)' %>
         <%= form.text_field :file_name, class: 'form-control' %>
       </div>
 
@@ -47,7 +47,7 @@
       </div>
 
       <div class="col-md-8">
-        <%= form.label :file %>
+        <%= form.label 'File (Required)' %>
         <%= form.file_field :file, class: 'form-control' %>
       </div>
     </div>
