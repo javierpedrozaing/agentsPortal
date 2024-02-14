@@ -32,7 +32,7 @@ class LibrariesController < ApplicationController
 
   def update
     if @file_item.update(file_item_params)
-      redirect_to @file_item, notice: 'File item was successfully updated.'
+      redirect_to libraries_path, notice: 'File item was successfully updated.'
     else
       render :edit
     end

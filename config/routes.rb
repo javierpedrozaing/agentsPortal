@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :transactions do
     collection do
       post 'import'
+      post 'filter', to: 'transactions#filter', as: 'filter'
     end
   end
   get 'dashboard/index', as: 'dashboard'

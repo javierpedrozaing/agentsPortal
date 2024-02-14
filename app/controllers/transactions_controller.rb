@@ -4,10 +4,10 @@ class TransactionsController < ApplicationController
   before_action :set_transaction, only: %i[ show edit update destroy ]
   before_action :get_type_of_transactions, only: %i[ new edit ]
   before_action :get_agents_list, only: %i[ new edit ]
+  before_action :new_transaction_instance, only: %i[ index new filter ]
 
   # GET /transactions or /transactions.json
   def index
-    @transaction = Transaction.new
     @transactions = Transaction.all
   end
 
@@ -17,7 +17,6 @@ class TransactionsController < ApplicationController
 
   # GET /transactions/new
   def new
-    @transaction = Transaction.new
   end
 
   # GET /transactions/1/edit
@@ -123,8 +122,38 @@ class TransactionsController < ApplicationController
     end
   end
 
+  def filter
+    # create function to filter by date, agent, and type of transaction
+    start_year, start_month, start_day = params[:start_date].split('-')[0], params[:start_date].split('-')[1], params[:start_date].split('-')[2] if params[:start_date].present?
+    closing_year, closing_month, closing_day = params[:closing_date].split('-')[0], params[:closing_date].split('-')[1], params[:closing_date].split('-')[2] if params[:closing_date].present?
+
+    start_date = Date.new(start_year.to_i, start_month.to_i, start_day.to_i) if params[:start_date].present?
+    closing_date = Date.new(closing_year.to_i, closing_month.to_i, closing_day.to_i) if params[:closing_date].present?
+
+    if start_date.present?
+      @transactions = Transaction.where(current_date: start_date) unless start_date.nil?
+    elsif closing_date.present?
+      @transactions = Transaction.where(closing_date: closing_date) unless closing_date.nil?
+    elsif params[:agent_name].present?
+      agent_name_pattern = "#{params[:agent_name].downcase}%"
+      @transactions = Transaction.where('LOWER(agent1_name) LIKE ? OR LOWER(agent2_name) LIKE ? OR LOWER(agent3_name) LIKE ?', agent_name_pattern, agent_name_pattern, agent_name_pattern)
+    elsif params[:transaction_type].present?
+      @transactions = Transaction.where(type_of_transaction: params[:transaction_type])
+    else
+      @transactions = Transaction.all
+    end
+
+    respond_to do |format|
+      format.html { render :index }
+    end
+  end
+
   private
-    # Use callbacks to share common setup or constraints between actions.
+
+    def new_transaction_instance
+      @transaction = Transaction.new
+    end
+
     def set_transaction
       @transaction = Transaction.find(params[:id])
     end
@@ -134,7 +163,7 @@ class TransactionsController < ApplicationController
     end
 
     def get_agents_list
-      @agents_list = User.select(:id, :name, :last_name).where(role: 'agent').map { |agent| [agent.name + ' ' + agent.last_name, agent.id] }
+      @agents_list = User.select(:id, :name, :last_name).where(role: 'agent').map { |agent| [agent.name + ' ' + agent.last_name] }
     end
 
     # Only allow a list of trusted parameters through.

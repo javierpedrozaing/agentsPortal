@@ -1,61 +1,7 @@
 <div class="container">
   <h1>New File Item</h1>
   </br>
-  <%= form_with(model: @file_item, url: libraries_path, multipart: true) do |form| %>
-
-  <div class="row">
-    <div class="col-md-4">
-
-      <% if @file_item.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@file_item.errors.count, "error") %> prohibited this file item from being saved:</h2>
-
-          <ul>
-            <% @file_item.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
-    </div>
-  </div>
-
-    <div class="row">
-      <div class="col-md-4">
-        <%= form.label :category_id %>
-        <%= form.collection_select :category_id, Category.all, :id, :name, {prompt: "Select a category"}, class: 'form-control' %>
-      </div>
-
-      <div class="col-md-4">        
-
-        <%= form.label 'File name (Required)' %>
-        <%= form.text_field :file_name, class: 'form-control' %>
-      </div>
-
-      <div class="col-md-4">
-        <%= form.label :file_description %>
-        <%= form.text_field :file_description, class: 'form-control' %>
-      </div>
-    </div>
-
-<br/>
-
-    <div class="row">
-      <div class="col-md-4">
-        <%= form.label :file_type %>
-        <%= form.text_field :file_type, class: 'form-control' %>
-      </div>
-
-      <div class="col-md-8">
-        <%= form.label 'File (Required)' %>
-        <%= form.file_field :file, class: 'form-control' %>
-      </div>
-    </div>
-
-    <div class="row mt-2">
-      <div class="col-md-4">
-        <%= form.submit 'Upload File', class: 'btn btn-primary upload-file' %>
-      </div>
-    </div>
-  <% end %>
+  <%= render 'form', file_item: @file_item %>
+  </br>
+  <%= link_to 'Back', libraries_path %>
 </div>
