@@ -48,7 +48,7 @@
           <tr>
             <td class="col"><%= user_with_score[:user].name %> <%= user_with_score[:user].last_name %></td>
             <td class="col"><%= user_with_score[:user].email %></td>
-            <td class="col"><%= user_with_score[:score] %></td>
+            <td class="col">$ <%= user_with_score[:score] %></td>
             <td class="col"><%= user_with_score[:user].score&.sales_transactions.to_i %></td>
             <td class="col"><%= user_with_score[:transactions]&.first&.created_at&.year %></td>
             <td class="col"><%= user_with_score[:transactions]&.first&.created_at&.month %></td>

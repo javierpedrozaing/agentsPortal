@@ -30,7 +30,7 @@ class User < ApplicationRecord
 
       {
         user: user,
-        score: score&.sales_volume.to_f + score&.sales_transactions.to_i,
+        score: score&.sales_volume.to_f + score&.sales_transactions.to_i + score&.lease_volume.to_f + score&.lease_transactions.to_i,
         transactions: transactions
       }
     end

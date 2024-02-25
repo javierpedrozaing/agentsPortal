@@ -12,6 +12,9 @@
                   <p><%= user.last_name %></p>
                 </td>
                 <td>
+                  <p><%= user.agent&.licence %></p>
+                </td>
+                <td>
                   <%= link_to user.email, user_path(user) %>
                 </td>
                 <td>

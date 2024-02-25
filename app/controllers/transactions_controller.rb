@@ -28,35 +28,45 @@ class TransactionsController < ApplicationController
 
     if file.present?
       data = file.read
+      csv = CSV.parse(data, headers: true)
 
-      begin
-        CSV.parse(data, headers: true) do |row|
-          begin
-            transaction_params = row.to_h.transform_values { |value| value.present? ? value : "-" }
-            transaction_params['user_id'] = current_user.id
+      csv.each do |row|
+        ActiveRecord::Base.transaction do
+          @transaction = Transaction.new
+          transaction_attributes = [
+            'current_date', 'agent1_name', 'agent2_name', 'agent3_name', 'agent1_licence',
+            'agent2_licence', 'agent3_licence', 'type_of_transaction', 'property_address',
+            'seller_lessor', 'buyer_lessee', 'agent_client', 'closing_date',
+            'title_escrow_company', 'sale_purchase', 'bank_deposit',
+            'transaction_fee_amount', 'commission_percentage', 'agent1_commission_percentage',
+            'agent1_commission_amount', 'agent2_commission_percentage', 'agent2_commission_amount',
+            'referral_to', 'referral_amount', 'office_commission_percentage', 'office_commission_amount'
+          ]
+          transaction_attributes.each do |attribute|
+            @transaction.send("#{attribute}=", row[attribute])
+          end
 
-            agent1_name, agent1_last_name = transaction_params['agent1_name'].split(' ')
-            agent2_name, agent2_last_name = transaction_params['agent2_name'].split(' ')
-            agent3_name, agent3_last_name = transaction_params['agent3_name'].split(' ')
+          user1 = Agent.find_by(licence: row['agent1_licence'])&.user
+          user2 = Agent.find_by(licence: row['agent2_licence'])&.user
+          user3 = Agent.find_by(licence: row['agent3_licence'])&.user
 
-            user1 = User.where('lower(name) = ? AND lower(last_name) = ?', agent1_name, agent1_last_name)
-            user2 = User.where('lower(name) = ? AND lower(last_name) = ?', agent2_name, agent2_last_name)
-            user3 = User.where('lower(name) = ? AND lower(last_name) = ?', agent3_name, agent3_last_name)
+          if @transaction.save!
+            users = []
 
-            @transaction = Transaction.create!(transaction_params)
-            @transaction.users << user1 << user2 << user3
+            if user1.nil? && user2.nil? && user3.nil?
+              raise ActiveRecord::Rollback, 'some agents are not found'
+            else
+              users << user1 << user2 << user3
+              users.compact!
 
-            update_scores(@transaction, [@user1, @user2, @user3])
-          rescue ActiveRecord::RecordInvalid => e
-            # Handle record invalid exception for a specific row
-            Rails.logger.error("Error creating transaction: #{e.message}")
+              @transaction.users << users
+              update_scores(@transaction, users)
+            end
           end
         end
-
-        redirect_to transactions_path, notice: 'CSV file imported successfully.'
-      rescue CSV::MalformedCSVError => e
-        redirect_to new_transaction_path, alert: "Error importing CSV file: #{e.message}"
       end
+      @transactions = Transaction.all
+      render :index, notice: 'CSV file was successfully imported.'
     else
       redirect_to new_transaction_path, alert: 'Please select a CSV file.'
     end
@@ -69,7 +79,6 @@ class TransactionsController < ApplicationController
     @transaction.users << users
 
     update_scores(@transaction, users)
-
     respond_to do |format|
       if @transaction.save
         format.html { redirect_to transactions_path, notice: "Transaction was successfully created." }
@@ -95,6 +104,7 @@ class TransactionsController < ApplicationController
   end
 
   def update_scores(transaction, users)
+    users.reject!(&:nil?) if users.is_a?(Array)
     return unless transaction.present? && users.present?
 
     users.each do |user|
@@ -102,10 +112,10 @@ class TransactionsController < ApplicationController
 
       case transaction.type_of_transaction
       when 'Sale'
-        score.sales_volume += transaction.transaction_fee_amount.to_f
+        score.sales_volume += transaction.sale_purchase.to_f
         score.sales_transactions += 1
       when 'Lease'
-        score.lease_volume += transaction.transaction_fee_amount.to_f
+        score.lease_volume += transaction.sale_purchase.to_f
         score.lease_transactions += 1
       end
 
@@ -115,6 +125,8 @@ class TransactionsController < ApplicationController
 
   # DELETE /transactions/1 or /transactions/1.json
   def destroy
+    # TO-DO
+    # update scores
     if @transaction.destroy
       redirect_to transactions_path, notice: 'Record was successfully destroyed.'
     else
@@ -163,11 +175,11 @@ class TransactionsController < ApplicationController
     end
 
     def get_agents_list
-      @agents_list = User.select(:id, :name, :last_name).where(role: 'agent').map { |agent| [agent.name + ' ' + agent.last_name] }
+      @agents_list = User.select(:id, :name, :last_name).where(role: 'agent').map { |agent| [agent.name + ' ' + agent.last_name, agent.id] }
     end
 
     # Only allow a list of trusted parameters through.
     def transaction_params
-      params.require(:transaction).permit(:current_date, :agent1_name, :agent2_name, :agent3_name, :type_of_transaction, :property_address, :seller_lessor, :buyer_lessee, :agent_client, :closing_date, :title_escrow_company, :sale_purchase, :bank_deposit, :transaction_fee_amount, :commission_percentage, :agent1_commission_percentage, :agent1_commission_amount, :agent2_commission_percentage, :agent2_commission_amount, :referral_to, :referral_amount, :office_commission_percentage, :office_commission_amount)
+      params.require(:transaction).permit(:current_date, :agent1_name, :agent2_name, :agent3_name, :agent1_licence, :agent2_licence, :agent3_licence, :type_of_transaction, :property_address, :seller_lessor, :buyer_lessee, :agent_client, :closing_date, :title_escrow_company, :sale_purchase, :bank_deposit, :transaction_fee_amount, :commission_percentage, :agent1_commission_percentage, :agent1_commission_amount, :agent2_commission_percentage, :agent2_commission_amount, :referral_to, :referral_amount, :office_commission_percentage, :office_commission_amount)
     end
 end
